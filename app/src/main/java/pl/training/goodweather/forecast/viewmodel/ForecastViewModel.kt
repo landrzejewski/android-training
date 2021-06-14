@@ -8,12 +8,21 @@ import kotlinx.coroutines.launch
 import pl.training.goodweather.forecast.model.DayForecast
 import pl.training.goodweather.forecast.model.FakeForecastProvider
 import pl.training.goodweather.forecast.model.ForecastProvider
+import pl.training.goodweather.forecast.model.api.ForecastApi
+import pl.training.goodweather.forecast.model.api.RetrofitForecastProvider
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ForecastViewModel : ViewModel() {
 
-    private val forecastProvider: ForecastProvider = FakeForecastProvider()
+    private val forecastApi = Retrofit.Builder()
+        .baseUrl("https://api.openweathermap.org/data/2.5/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(ForecastApi::class.java)
+    private val forecastProvider: ForecastProvider = RetrofitForecastProvider(forecastApi)
     private val forecast = MutableLiveData<List<DayForecastViewModel>>()
 
     val currentForecast: LiveData<List<DayForecastViewModel>> = forecast

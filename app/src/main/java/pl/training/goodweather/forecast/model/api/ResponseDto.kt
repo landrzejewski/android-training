@@ -1,0 +1,5 @@
+package pl.training.goodweather.forecast.model.api
+
+import com.google.gson.annotations.SerializedName
+
+data class ResponseDto(@SerializedName("list") val forecast: List<DayForecastDto>)
