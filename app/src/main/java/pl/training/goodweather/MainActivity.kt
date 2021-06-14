@@ -1,56 +1,48 @@
 package pl.training.goodweather
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import pl.training.goodweather.databinding.ActivityMainBinding
+import pl.training.goodweather.forecast.common.setDrawable
+import pl.training.goodweather.forecast.viewmodel.DayForecastViewModel
+import pl.training.goodweather.forecast.viewmodel.ForecastViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val tag = MainActivity::class.simpleName
+    private lateinit var binding: ActivityMainBinding
+
+    private val viewModel: ForecastViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(tag, "On create")
-        setContentView(R.layout.activity_main)
-        findViewById<Button>(R.id.sayHelloButton).setOnClickListener(::sayHello)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        initView()
+        bindView()
     }
 
-    private fun sayHello(button: View) {
-        val message = findViewById<TextView>(R.id.message)
-        message.text = getString(R.string.hello_android)
+    private fun initView() {
+
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d(tag, "On start")
+    private fun bindView() {
+        viewModel.currentForecast.observe(this, ::updateView)
+        binding.okButton.setOnClickListener {
+            val cityName = binding.cityNameEditText.text.toString()
+            if (cityName.isNotBlank()) {
+                viewModel.refreshForecast(cityName)
+            }
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d(tag, "On resume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(tag, "On pause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(tag, "On stop")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(tag, "On destroy")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.d(tag, "On restart")
+    private fun  updateView(forecast: List<DayForecastViewModel>) {
+        with(forecast.first()) {
+           binding.iconImageView.setDrawable(icon)
+           binding.descriptionTextView.text = description
+           binding.temperatureTextView.text = temperature
+           binding.pressureTextView.text = pressure
+        }
     }
 
 }
