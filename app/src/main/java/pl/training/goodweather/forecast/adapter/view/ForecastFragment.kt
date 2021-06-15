@@ -1,47 +1,59 @@
 package pl.training.goodweather.forecast.adapter.view
 
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import pl.training.goodweather.R
 import pl.training.goodweather.common.getProperty
 import pl.training.goodweather.common.hideKeyboard
 import pl.training.goodweather.common.setDrawable
 import pl.training.goodweather.common.setProperty
-import pl.training.goodweather.databinding.ActivityForecastBinding
+import pl.training.goodweather.databinding.FragmentForecastBinding
 
-class ForecastActivity : AppCompatActivity() {
+class ForecastFragment : Fragment() {
 
-    private lateinit var binding: ActivityForecastBinding
+    private lateinit var binding: FragmentForecastBinding
 
     private val cityKey = "cityName"
     private val defaultCity = "Warsaw"
-    private val viewModel: ForecastViewModel by viewModels()
+    private val viewModel: ForecastViewModel by activityViewModels()
     private val forecastAdapter = ForecastAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityForecastBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        super.onCreateView(inflater, container, savedInstanceState)
+        binding = FragmentForecastBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initView()
         bindView()
         getProperty(cityKey, defaultCity)?.let {
             refreshForecast(it)
-            binding.cityNameEditText.setText(it);
+            binding.cityNameEditText.setText(it)
         }
     }
 
     private fun initView() {
-        binding.forecastRecyclerView.layoutManager = LinearLayoutManager(this, HORIZONTAL, false)
+        binding.forecastRecyclerView.layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
         binding.forecastRecyclerView.adapter = forecastAdapter
     }
 
     private fun bindView() {
-        viewModel.currentForecast.observe(this, ::updateView)
+        viewModel.currentForecast.observe(viewLifecycleOwner, ::updateView)
         binding.okButton.setOnClickListener {
             it.hideKeyboard()
             refreshForecast(binding.cityNameEditText.text.toString())
+        }
+        binding.detailsButton.setOnClickListener {
+            findNavController().navigate(R.id.showForecastDetails)
         }
     }
 

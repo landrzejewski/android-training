@@ -14,7 +14,7 @@
         android:theme="@style/Theme.GoodWeather">
 
         <activity
-            android:name="pl.training.goodweather.forecast.adapter.view.ForecastActivity"
+            android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

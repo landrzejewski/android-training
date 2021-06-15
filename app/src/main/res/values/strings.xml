@@ -5,4 +5,7 @@
     <string name="pressure">Pressure</string>
     <string name="city_name">City name</string>
     <string name="ok">Ok</string>
+    <string name="forecast_fragment_label">Forecast</string>
+    <string name="forecast_details_fragment_label">Forecast details</string>
+    <string name="details">Details</string>
 </resources>

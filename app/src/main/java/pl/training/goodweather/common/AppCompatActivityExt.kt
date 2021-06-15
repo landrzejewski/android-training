@@ -1,11 +1,13 @@
 package pl.training.goodweather.common
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
-fun AppCompatActivity.setProperty(key: String, value: String) = getSharedPreferences(packageName, AppCompatActivity.MODE_PRIVATE)
+fun Fragment.setProperty(key: String, value: String, context: Context = requireContext()) = context.getSharedPreferences(context.packageName, AppCompatActivity.MODE_PRIVATE)
     .edit()
     .putString(key, value)
     .apply()
 
-fun AppCompatActivity.getProperty(key: String, defaultValue: String = "") = getSharedPreferences(packageName, AppCompatActivity.MODE_PRIVATE)
+fun Fragment.getProperty(key: String, defaultValue: String = "", context: Context = requireContext()) = context.getSharedPreferences(context.packageName, AppCompatActivity.MODE_PRIVATE)
     .getString(key, defaultValue)
