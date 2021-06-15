@@ -31,6 +31,7 @@ class ForecastViewModel : ViewModel() {
     fun refreshForecast(city: String = cityName) {
         viewModelScope.launch {
             cityName = city
+            forecast.value = forecastService.getCachedForecast(city).map(::toViewModel)
             forecast.value = forecastService.getForecast(city).map(::toViewModel)
         }
     }

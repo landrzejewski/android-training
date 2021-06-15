@@ -2,6 +2,7 @@ package pl.training.goodweather
 
 import android.app.Application
 import pl.training.goodweather.configuration.ApplicationGraph
+import pl.training.goodweather.configuration.ApplicationModule
 import pl.training.goodweather.configuration.DaggerApplicationGraph
 
 class GoodWeatherApplication : Application() {
@@ -16,6 +17,7 @@ class GoodWeatherApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         applicationGraph = DaggerApplicationGraph.builder()
+            .applicationModule(ApplicationModule(this))
             .build()
     }
 

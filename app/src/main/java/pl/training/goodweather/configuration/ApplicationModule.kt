@@ -1,5 +1,8 @@
 package pl.training.goodweather.configuration
 
+import android.app.Application
+import android.content.Context
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -9,7 +12,11 @@ import pl.training.goodweather.common.logging.Logger
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule {
+class ApplicationModule(private val application: Application) {
+
+    @Singleton
+    @Provides
+    fun context(): Context = application
 
     @Singleton
     @Provides
@@ -24,5 +31,11 @@ class ApplicationModule {
             .addInterceptor(loggingInterceptor)
             .build()
     }
+
+    @Singleton
+    @Provides
+    fun database(context: Context): ApplicationDatabase = Room.databaseBuilder(context, ApplicationDatabase::class.java, "database")
+        .fallbackToDestructiveMigration()
+        .build()
 
 }

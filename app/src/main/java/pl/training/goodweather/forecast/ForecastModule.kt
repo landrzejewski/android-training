@@ -2,9 +2,13 @@ package pl.training.goodweather.forecast
 
 import dagger.Module
 import dagger.Provides
+import pl.training.goodweather.configuration.ApplicationDatabase
+import pl.training.goodweather.forecast.adapter.persistence.ForecastDao
+import pl.training.goodweather.forecast.adapter.persistence.RoomForecastRepository
 import pl.training.goodweather.forecast.adapter.provider.ForecastApi
 import pl.training.goodweather.forecast.adapter.provider.RetrofitForecastProvider
 import pl.training.goodweather.forecast.model.ForecastService
+import pl.training.goodweather.forecast.port.persistence.ForecastRepository
 import pl.training.goodweather.forecast.port.provider.ForecastProvider
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,6 +31,14 @@ class ForecastModule {
 
     @Singleton
     @Provides
-    fun forecastService(forecastProvider: ForecastProvider) = ForecastService(forecastProvider)
+    fun forecastDao(database: ApplicationDatabase): ForecastDao = database.forecastDao();
+
+    @Singleton
+    @Provides
+    fun forecastRepository(forecastDao: ForecastDao): ForecastRepository = RoomForecastRepository(forecastDao)
+
+    @Singleton
+    @Provides
+    fun forecastService(forecastProvider: ForecastProvider, forecastRepository: ForecastRepository) = ForecastService(forecastProvider, forecastRepository)
 
 }
