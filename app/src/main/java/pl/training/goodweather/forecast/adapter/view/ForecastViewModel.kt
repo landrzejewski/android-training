@@ -22,13 +22,15 @@ class ForecastViewModel : ViewModel() {
     private val forecast = MutableLiveData<List<DayForecastViewModel>>()
 
     val currentForecast: LiveData<List<DayForecastViewModel>> = forecast
+    var cityName = ""
 
     init {
         applicationGraph.inject(this)
     }
 
-    fun refreshForecast(city: String) {
+    fun refreshForecast(city: String = cityName) {
         viewModelScope.launch {
+            cityName = city
             forecast.value = forecastService.getForecast(city).map(::toViewModel)
         }
     }

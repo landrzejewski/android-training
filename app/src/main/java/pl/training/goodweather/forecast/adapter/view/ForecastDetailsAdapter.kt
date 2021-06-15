@@ -8,13 +8,14 @@ import pl.training.goodweather.R
 import pl.training.goodweather.common.setDrawable
 import pl.training.goodweather.databinding.ItemDayForecastBinding
 
-class ForecastDetailsAdapter(private var forecast: List<DayForecastViewModel> = emptyList()) : RecyclerView.Adapter<ForecastDetailsAdapter.ViewHolder>() {
+class ForecastDetailsAdapter(private var forecast: List<DayForecastViewModel> = emptyList(), var tapItemListener: (DayForecastViewModel) -> Unit = {}) : RecyclerView.Adapter<ForecastDetailsAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, var tapItemListener: (DayForecastViewModel) -> Unit) : RecyclerView.ViewHolder(view) {
 
         private val binding = ItemDayForecastBinding.bind(view)
 
         fun update(dayForecastViewModel: DayForecastViewModel) {
+            binding.root.setOnClickListener { tapItemListener(dayForecastViewModel) }
             binding.iconImageView.setDrawable(dayForecastViewModel.icon)
             binding.temperatureTextView.text = dayForecastViewModel.temperature
             binding.dateTextView.text = dayForecastViewModel.date
@@ -25,7 +26,7 @@ class ForecastDetailsAdapter(private var forecast: List<DayForecastViewModel> = 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_forecast_details, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, tapItemListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

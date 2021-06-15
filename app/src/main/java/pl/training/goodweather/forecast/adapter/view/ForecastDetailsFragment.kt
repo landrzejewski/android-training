@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import pl.training.goodweather.databinding.FragmentForecastDetailsBinding
 
 class ForecastDetailsFragment : Fragment() {
@@ -34,7 +35,16 @@ class ForecastDetailsFragment : Fragment() {
     }
 
     private fun bindView() {
-        viewModel.currentForecast.observe(viewLifecycleOwner, forecastDetailsAdapter::update)
+        forecastDetailsAdapter.tapItemListener = {
+            Snackbar.make(binding.root, it.description, Snackbar.LENGTH_LONG).show()
+        }
+        viewModel.currentForecast.observe(viewLifecycleOwner) {
+            forecastDetailsAdapter.update(it)
+            binding.swipeToRefresh.isRefreshing = false
+        }
+        binding.swipeToRefresh.setOnRefreshListener {
+            viewModel.refreshForecast()
+        }
     }
 
 }
