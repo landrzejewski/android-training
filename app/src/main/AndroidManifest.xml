@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GoodWeather">
 
-        <activity android:name=".forecast.view.ForecastActivity">
+        <activity android:name="pl.training.goodweather.forecast.adapter.view.ForecastActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

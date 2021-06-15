@@ -1,15 +1,15 @@
-package pl.training.goodweather.forecast.view
+package pl.training.goodweather.forecast.adapter.view
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import pl.training.goodweather.common.getProperty
+import pl.training.goodweather.common.hideKeyboard
+import pl.training.goodweather.common.setDrawable
+import pl.training.goodweather.common.setProperty
 import pl.training.goodweather.databinding.ActivityForecastBinding
-import pl.training.goodweather.forecast.common.hideKeyboard
-import pl.training.goodweather.forecast.common.setDrawable
-import pl.training.goodweather.forecast.viewmodel.DayForecastViewModel
-import pl.training.goodweather.forecast.viewmodel.ForecastViewModel
 
 class ForecastActivity : AppCompatActivity() {
 
@@ -26,9 +26,9 @@ class ForecastActivity : AppCompatActivity() {
         setContentView(binding.root)
         initView()
         bindView()
-        getCityName()?.let {  city ->
-            binding.cityNameEditText.setText(city)
-            viewModel.refreshForecast(city)
+        getProperty(cityKey, defaultCity)?.let {
+            refreshForecast(it)
+            binding.cityNameEditText.setText(it);
         }
     }
 
@@ -40,12 +40,15 @@ class ForecastActivity : AppCompatActivity() {
     private fun bindView() {
         viewModel.currentForecast.observe(this, ::updateView)
         binding.okButton.setOnClickListener {
-            val cityName = binding.cityNameEditText.text.toString()
-            if (cityName.isNotBlank()) {
-                it.hideKeyboard()
-                setCityName(cityName)
-                viewModel.refreshForecast(cityName)
-            }
+            it.hideKeyboard()
+            refreshForecast(binding.cityNameEditText.text.toString())
+        }
+    }
+
+    private fun refreshForecast(city: String) {
+        if (city.isNotBlank()) {
+            setProperty(cityKey, city)
+            viewModel.refreshForecast(city)
         }
     }
 
@@ -58,13 +61,5 @@ class ForecastActivity : AppCompatActivity() {
         }
         forecastAdapter.update(forecast.drop(1))
     }
-
-    private fun setCityName(cityName: String)  = getSharedPreferences(packageName, MODE_PRIVATE)
-        .edit()
-        .putString(cityKey, cityName)
-        .apply()
-
-    private fun getCityName() = getSharedPreferences(packageName, MODE_PRIVATE)
-        .getString(cityKey, defaultCity)
 
 }

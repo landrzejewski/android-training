@@ -1,13 +1,12 @@
-package pl.training.goodweather.forecast.view
+package pl.training.goodweather.forecast.adapter.view
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pl.training.goodweather.R
+import pl.training.goodweather.common.setDrawable
 import pl.training.goodweather.databinding.ItemDayForecastBinding
-import pl.training.goodweather.forecast.common.setDrawable
-import pl.training.goodweather.forecast.viewmodel.DayForecastViewModel
 
 class ForecastAdapter(private var forecast: List<DayForecastViewModel> = emptyList()) : RecyclerView.Adapter<ForecastAdapter.ViewHolder>() {
 

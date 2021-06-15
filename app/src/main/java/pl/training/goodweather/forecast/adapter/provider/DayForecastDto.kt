@@ -1,4 +1,4 @@
-package pl.training.goodweather.forecast.model.api
+package pl.training.goodweather.forecast.adapter.provider
 
 import com.google.gson.annotations.SerializedName
 

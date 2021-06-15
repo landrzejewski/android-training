@@ -1,5 +1,7 @@
-package pl.training.goodweather.forecast.model
+package pl.training.goodweather.forecast.adapter.provider
 
+import pl.training.goodweather.forecast.model.DayForecast
+import pl.training.goodweather.forecast.port.provider.ForecastProvider
 import java.util.*
 
 class FakeForecastProvider : ForecastProvider {

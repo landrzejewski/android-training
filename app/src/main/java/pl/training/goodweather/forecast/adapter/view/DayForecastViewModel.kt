@@ -1,4 +1,4 @@
-package pl.training.goodweather.forecast.viewmodel
+package pl.training.goodweather.forecast.adapter.view
 
 data class DayForecastViewModel(
     val icon: String,

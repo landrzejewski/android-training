@@ -1,4 +1,4 @@
-package pl.training.goodweather.forecast.model.api
+package pl.training.goodweather.forecast.adapter.provider
 
 import retrofit2.http.GET
 import retrofit2.http.Query

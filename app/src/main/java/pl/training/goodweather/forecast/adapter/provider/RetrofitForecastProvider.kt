@@ -1,7 +1,7 @@
-package pl.training.goodweather.forecast.model.api
+package pl.training.goodweather.forecast.adapter.provider
 
 import pl.training.goodweather.forecast.model.DayForecast
-import pl.training.goodweather.forecast.model.ForecastProvider
+import pl.training.goodweather.forecast.port.provider.ForecastProvider
 import java.util.*
 
 class RetrofitForecastProvider(private val forecastApi: ForecastApi) : ForecastProvider {
