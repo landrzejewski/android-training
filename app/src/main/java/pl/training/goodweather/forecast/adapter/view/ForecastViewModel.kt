@@ -5,18 +5,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import pl.training.goodweather.GoodWeatherApplication
+import pl.training.goodweather.GoodWeatherApplication.Companion.applicationGraph
 import pl.training.goodweather.common.formatDate
 import pl.training.goodweather.common.formatPressure
 import pl.training.goodweather.common.formatTemperature
 import pl.training.goodweather.forecast.model.DayForecast
 import pl.training.goodweather.forecast.model.ForecastService
+import javax.inject.Inject
 
 class ForecastViewModel : ViewModel() {
 
-    private val forecastService = ForecastService()
+    @Inject
+    lateinit var forecastService: ForecastService
+
     private val forecast = MutableLiveData<List<DayForecastViewModel>>()
 
     val currentForecast: LiveData<List<DayForecastViewModel>> = forecast
+
+    init {
+        applicationGraph.inject(this)
+    }
 
     fun refreshForecast(city: String) {
         viewModelScope.launch {
