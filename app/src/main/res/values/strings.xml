@@ -8,4 +8,10 @@
     <string name="forecast_fragment_label">Forecast</string>
     <string name="forecast_details_fragment_label">Forecast details</string>
     <string name="details">Details</string>
+    <string name="profile_fragment_label">Profile</string>
+    <string name="personal_info">Personal info</string>
+    <string name="email_address">Email address</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="full_name">Full name</string>
+    <string name="invalid_form">Invalid form</string>
 </resources>
