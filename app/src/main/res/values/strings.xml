@@ -14,4 +14,7 @@
     <string name="date_of_birth">Date of birth</string>
     <string name="full_name">Full name</string>
     <string name="invalid_form">Invalid form</string>
+    <string name="photo">photo</string>
+    <string name="cancel">CANCEL</string>
+    <string name="settings">Settings</string>
 </resources>

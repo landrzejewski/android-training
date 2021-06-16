@@ -7,14 +7,27 @@
     android:padding="@dimen/padding"
     tools:context=".profile.adapter.view.ProfileFragment">
 
+    <ImageView
+        android:id="@+id/photoImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:padding="@dimen/padding"
+        android:background="@drawable/rounded_rect"
+        android:contentDescription="@string/photo"
+        android:layout_marginTop="@dimen/big_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/sectionTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/personal_info"
+        android:layout_marginTop="@dimen/big_margin"
         android:textStyle="bold"
         android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photoImageView"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -45,6 +58,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/date_of_birth"
         android:autofillHints="none"
+        android:textColor="@color/text"
         android:inputType="date"
         app:layout_constraintTop_toBottomOf="@id/emailEditText"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +70,17 @@
         android:layout_height="wrap_content"
         android:textColor="@color/invalid"
         app:layout_constraintTop_toBottomOf="@id/birthDateEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <pl.training.goodweather.common.view.ImageBox
+        android:id="@+id/promoImageBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:image="@drawable/ic_cloud_sun"
+        android:paddingTop="@dimen/big_margin"
+        app:label="Sun"
+        app:layout_constraintTop_toBottomOf="@id/errorsTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -9,4 +9,5 @@
     <dimen name="big_margin">32dp</dimen>
     <dimen name="icon_size">200dp</dimen>
     <dimen name="small_icon">40dp</dimen>
+    <dimen name="box_size">80dp</dimen>
 </resources>
