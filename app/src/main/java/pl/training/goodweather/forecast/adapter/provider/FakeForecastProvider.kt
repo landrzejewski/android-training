@@ -7,7 +7,7 @@ import java.util.*
 
 class FakeForecastProvider : ForecastProvider {
 
-    override fun getForecast(city: String): Maybe<List<DayForecast>> = Maybe.just(
+    override fun getForecast(city: String, numberOfDays: Int): Maybe<List<DayForecast>> = Maybe.just(
         listOf(
             DayForecast("ic_sun", "Clear sky", 18.0, 1024.0, Date()),
             DayForecast("ic_sun", "Clear sky", 18.0, 1024.0, Date()),

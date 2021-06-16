@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import pl.training.goodweather.GoodWeatherApplication.Companion.applicationGraph
+import pl.training.goodweather.common.UserPreferences
 import pl.training.goodweather.common.formatDate
 import pl.training.goodweather.common.formatPressure
 import pl.training.goodweather.common.formatTemperature
@@ -20,25 +21,29 @@ class ForecastViewModel : ViewModel() {
     lateinit var forecastService: ForecastService
     @Inject
     lateinit var logger: Logger
+    @Inject
+    lateinit var userPreferences: UserPreferences
 
+    private val cityKey = "cityName"
+    private val defaultCity = "Warsaw"
     private val forecast = MutableLiveData<List<DayForecastViewModel>>()
     private val disposables = CompositeDisposable()
 
     val currentForecast: LiveData<List<DayForecastViewModel>> = forecast
-    var cityName = ""
 
     init {
         applicationGraph.inject(this)
+        refreshForecast()
     }
 
-    fun refreshForecast(city: String = cityName) {
-        cityName = city
+    fun refreshForecast(city: String = userPreferences.get(cityKey, defaultCity)) {
         forecastService.getForecast(city)
-            .subscribe(::onForecast) { logger.log(it.toString()) }
+            .subscribe({ onForecast(city, it) }, { logger.log(it.toString()) })
             .addTo(disposables)
     }
 
-    private fun onForecast(forecast: List<DayForecast>) {
+    private fun onForecast(city: String, forecast: List<DayForecast>) {
+        userPreferences.set(cityKey, city)
         this.forecast.postValue(forecast.map(::toViewModel))
     }
 

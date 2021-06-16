@@ -19,7 +19,7 @@ class RetrofitForecastProvider(private val forecastApi: ForecastApi) : ForecastP
         "50d" to "ic_wind"
     )
 
-    override fun getForecast(city: String): Maybe<List<DayForecast>> = forecastApi.getForecast(city)
+    override fun getForecast(city: String, numberOfDays: Int): Maybe<List<DayForecast>> = forecastApi.getForecast(city, numberOfDays)
         .map { map(it.forecast) }
 
     private fun map(forecast: List<DayForecastDto>) = forecast.map {

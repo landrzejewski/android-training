@@ -6,6 +6,6 @@ import java.util.*
 
 interface ForecastProvider {
 
-   fun getForecast(city: String): Maybe<List<DayForecast>>
+   fun getForecast(city: String, numberOfDays: Int = 14): Maybe<List<DayForecast>>
 
 }

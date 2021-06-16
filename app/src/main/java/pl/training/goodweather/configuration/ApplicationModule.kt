@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import pl.training.goodweather.common.UserPreferences
 import pl.training.goodweather.common.logging.AndroidLogger
 import pl.training.goodweather.common.logging.Logger
 import javax.inject.Singleton
@@ -37,5 +38,9 @@ class ApplicationModule(private val application: Application) {
     fun database(context: Context): ApplicationDatabase = Room.databaseBuilder(context, ApplicationDatabase::class.java, "database")
         .fallbackToDestructiveMigration()
         .build()
+
+    @Singleton
+    @Provides
+    fun userPreferences(context: Context) = UserPreferences(context)
 
 }

@@ -15,11 +15,9 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import pl.training.goodweather.GoodWeatherApplication.Companion.applicationGraph
 import pl.training.goodweather.R
-import pl.training.goodweather.common.view.getProperty
-import pl.training.goodweather.common.view.hideKeyboard
 import pl.training.goodweather.common.logging.Logger
+import pl.training.goodweather.common.view.hideKeyboard
 import pl.training.goodweather.common.view.setDrawable
-import pl.training.goodweather.common.view.setProperty
 import pl.training.goodweather.databinding.FragmentForecastBinding
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -30,8 +28,6 @@ class ForecastFragment : Fragment() {
     @Inject
     lateinit var logger: Logger
 
-    private val cityKey = "cityName"
-    private val defaultCity = "Warsaw"
     private val viewModel: ForecastViewModel by activityViewModels()
     private val forecastAdapter = ForecastAdapter()
     private val disposables = CompositeDisposable()
@@ -47,10 +43,6 @@ class ForecastFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         bindView()
-        getProperty(cityKey, defaultCity)?.let {
-            refreshForecast(it)
-            binding.cityNameEditText.setText(it)
-        }
     }
 
     private fun initView() {
@@ -77,7 +69,6 @@ class ForecastFragment : Fragment() {
 
     private fun refreshForecast(city: String) {
         if (city.isNotBlank()) {
-            setProperty(cityKey, city)
             viewModel.refreshForecast(city)
         }
     }

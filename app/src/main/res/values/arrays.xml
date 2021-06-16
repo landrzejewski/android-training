@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="number_of_days">
+        <item>1</item>
+        <item>3</item>
+        <item>5</item>
+        <item>7</item>
+        <item>14</item>
+    </string-array>
+    <string-array name="number_of_days_labels">
+        <item>1 day</item>
+        <item>3 days</item>
+        <item>5 days</item>
+        <item>7 days</item>
+        <item>14 days</item>
+    </string-array>
+</resources>

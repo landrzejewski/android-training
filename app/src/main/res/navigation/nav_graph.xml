@@ -29,4 +29,10 @@
         android:label="@string/profile_fragment_label">
     </fragment>
 
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="pl.training.goodweather.common.view.SettingsFragment"
+        android:label="@string/settings_fragment_label">
+    </fragment>
+
 </navigation>

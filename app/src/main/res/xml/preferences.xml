@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/forecast_settings_title">
+
+        <ListPreference
+            android:defaultValue="7"
+            android:entries="@array/number_of_days_labels"
+            android:entryValues="@array/number_of_days"
+            android:key="forecast_number_of_days"
+            android:summary="Forecast duration in days"
+            android:title="Forecast duration" />
+
+        <SwitchPreference
+            android:key="forecast_cache_enabled"
+            android:summary="Enable forecast cache"
+            android:title="Cache" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

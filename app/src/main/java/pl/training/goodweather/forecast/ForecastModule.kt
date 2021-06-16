@@ -2,6 +2,7 @@ package pl.training.goodweather.forecast
 
 import dagger.Module
 import dagger.Provides
+import pl.training.goodweather.common.UserPreferences
 import pl.training.goodweather.configuration.ApplicationDatabase
 import pl.training.goodweather.forecast.adapter.persistence.ForecastDao
 import pl.training.goodweather.forecast.adapter.persistence.RoomForecastRepository
@@ -49,6 +50,6 @@ class ForecastModule {
 
     @Singleton
     @Provides
-    fun forecastService(@Named("default") forecastProvider: ForecastProvider, forecastRepository: ForecastRepository) = ForecastService(forecastProvider, forecastRepository)
+    fun forecastService(@Named("default") forecastProvider: ForecastProvider, forecastRepository: ForecastRepository, userPreferences: UserPreferences) = ForecastService(forecastProvider, forecastRepository, userPreferences)
 
 }

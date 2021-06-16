@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface ForecastApi {
 
-    @GET("forecast/daily?cnt=14&units=metric&APPID=b933866e6489f58987b2898c89f542b8")
-    fun getForecast(@Query("q") city: String): Maybe<ResponseDto>
+    @GET("forecast/daily?units=metric&APPID=b933866e6489f58987b2898c89f542b8")
+    fun getForecast(@Query("q") city: String, @Query("cnt") numberOfDays: Int): Maybe<ResponseDto>
 
 }
