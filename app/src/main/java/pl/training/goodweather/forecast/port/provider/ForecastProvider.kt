@@ -1,9 +1,11 @@
 package pl.training.goodweather.forecast.port.provider
 
+import io.reactivex.rxjava3.core.Maybe
 import pl.training.goodweather.forecast.model.DayForecast
+import java.util.*
 
 interface ForecastProvider {
 
-   suspend fun getForecast(city: String): List<DayForecast>
+   fun getForecast(city: String): Maybe<List<DayForecast>>
 
 }

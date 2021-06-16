@@ -1,21 +1,23 @@
 package pl.training.goodweather.forecast.adapter.persistence
 
 import androidx.room.*
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Maybe
 
 @Dao
 interface ForecastDao {
 
    @Insert(onConflict = OnConflictStrategy.REPLACE)
-   suspend fun save(city: CityEntity)
+   fun save(city: CityEntity): Completable
 
    @Insert
-   suspend fun save(forecast: List<DayForecastEntity>)
+   fun save(forecast: List<DayForecastEntity>): Completable
 
    @Transaction
    @Query("select * from CityEntity where name = :city")
-   suspend fun findAll(city: String): ForecastEntity
+   fun findAll(city: String): Maybe<ForecastEntity>
 
    @Query("delete from DayForecastEntity")
-   suspend fun deleteAll()
+   fun deleteAll(): Completable
 
 }

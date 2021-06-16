@@ -1,13 +1,15 @@
 package pl.training.goodweather.forecast.port.persistence
 
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Maybe
 import pl.training.goodweather.forecast.model.DayForecast
 
 interface ForecastRepository {
 
-    suspend fun save(city: String, forecast: List<DayForecast>)
+    fun save(city: String, forecast: List<DayForecast>): Completable
 
-    suspend fun getAll(city: String): List<DayForecast>
+    fun getAll(city: String): Maybe<List<DayForecast>>
 
-    suspend fun deleteAll()
+    fun deleteAll(): Completable
 
 }
