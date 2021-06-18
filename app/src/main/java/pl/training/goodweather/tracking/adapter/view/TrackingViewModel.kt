@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import pl.training.goodweather.common.formatPace
 import pl.training.goodweather.common.formatSpeed
 import pl.training.goodweather.common.formatTime
-import pl.training.runkeeper.tracking.models.ActivityPoint
+import pl.training.goodweather.tracking.model.ActivityPoint
 import java.util.*
 
 class TrackingViewModel : ViewModel() {

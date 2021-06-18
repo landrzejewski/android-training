@@ -1,4 +1,4 @@
-package pl.training.runkeeper.tracking.models
+package pl.training.goodweather.tracking.model
 
 import java.util.*
 

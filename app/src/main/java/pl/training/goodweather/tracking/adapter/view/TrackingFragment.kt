@@ -1,6 +1,7 @@
 package pl.training.goodweather.tracking.adapter.view
 
 import android.Manifest
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.location.Location
 import androidx.fragment.app.Fragment
 
@@ -10,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.PermissionChecker
+import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.fragment.app.activityViewModels
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationCallback
@@ -23,13 +26,12 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import pl.training.goodweather.GoodWeatherApplication.Companion.applicationGraph
 import pl.training.goodweather.R
 import pl.training.goodweather.common.logging.Logger
 import pl.training.goodweather.databinding.FragmentTrackingBinding
-import pl.training.runkeeper.tracking.models.ActivityPoint
+import pl.training.goodweather.tracking.model.ActivityPoint
 import javax.inject.Inject
 
 class TrackingFragment : Fragment(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks {
@@ -66,27 +68,19 @@ class TrackingFragment : Fragment(), OnMapReadyCallback, GoogleApiClient.Connect
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
-        bindViews()
+        initView()
     }
 
-    private fun initViews() {
+    private fun initView() {
         mapFragment = childFragmentManager.findFragmentById(R.id.tracking_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
-    private fun bindViews() {
-
-    }
-
     override fun onMapReady(googleMap: GoogleMap?) {
         map = googleMap
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PermissionChecker.PERMISSION_GRANTED
+        if (checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
         ) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), mapPermissionRequestCode)
+            requestPermissions(arrayOf(ACCESS_FINE_LOCATION), mapPermissionRequestCode)
         } else {
             configureMap()
         }
@@ -94,9 +88,9 @@ class TrackingFragment : Fragment(), OnMapReadyCallback, GoogleApiClient.Connect
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (permissions.contains(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[0] != PermissionChecker.PERMISSION_GRANTED) {
+        if (permissions.contains(ACCESS_FINE_LOCATION) && grantResults[0] != PERMISSION_GRANTED) {
            if (requestCode == mapPermissionRequestCode) {
-               requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), mapPermissionRequestCode)
+               requestPermissions(arrayOf(ACCESS_FINE_LOCATION), mapPermissionRequestCode)
            }
            if (requestCode == locationPermissionRequestCode) {
                startLocationUpdates()
@@ -131,12 +125,8 @@ class TrackingFragment : Fragment(), OnMapReadyCallback, GoogleApiClient.Connect
     }
 
     private fun startLocationUpdates() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PermissionChecker.PERMISSION_GRANTED
-        ) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionRequestCode)
+        if (checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(ACCESS_FINE_LOCATION), locationPermissionRequestCode)
         } else {
             viewModel.start()
             val locationRequest = LocationRequest()
