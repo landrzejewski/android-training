@@ -40,7 +40,8 @@ class ForecastService(private val forecastProvider: ForecastProvider,
                     .andThen(Maybe.just(it))
             }
             .toObservable()
-        return if (cacheEnabled)  Observable.concat(cachedForecast, forecast) else forecast
+        //return if (cacheEnabled) Observable.concat(cachedForecast, forecast) else forecast
+        return forecast
     }
 
 }

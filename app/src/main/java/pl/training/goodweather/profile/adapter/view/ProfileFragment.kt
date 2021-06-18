@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import pl.training.goodweather.R
 import pl.training.goodweather.common.view.DialogBox
 import pl.training.goodweather.common.view.RoundedTransformation
 import pl.training.goodweather.databinding.FragmentProfileBinding
+import pl.training.goodweather.profile.model.User
 import java.util.*
 import java.util.Calendar.*
 
@@ -55,6 +57,7 @@ class ProfileFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun bindView() {
+        binding.user = User("Jan", "", false)
         val fullNameChanges = binding.fullNameEditText.textChanges()
             .map { it.length > 3 }
         val emailChanges = binding.emailEditText.textChanges()
@@ -81,6 +84,10 @@ class ProfileFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.photoImageView.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(intent, cameraRequestCode)
+        }
+        binding.saveButton.setOnClickListener {
+            val currentUser = binding.user
+            Log.d("###", currentUser.toString())
         }
     }
 

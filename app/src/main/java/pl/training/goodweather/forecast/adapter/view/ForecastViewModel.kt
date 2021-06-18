@@ -23,6 +23,7 @@ class ForecastViewModel : ViewModel() {
     lateinit var logger: Logger
     @Inject
     lateinit var userPreferences: UserPreferences
+    private val isLoading = MutableLiveData<Boolean>()
 
     private val cityKey = "cityName"
     private val defaultCity = "Warsaw"
@@ -30,6 +31,7 @@ class ForecastViewModel : ViewModel() {
     private val disposables = CompositeDisposable()
 
     val currentForecast: LiveData<List<DayForecastViewModel>> = forecast
+    val isLoadingChanges: LiveData<Boolean> = isLoading
 
     init {
         applicationGraph.inject(this)
@@ -37,12 +39,14 @@ class ForecastViewModel : ViewModel() {
     }
 
     fun refreshForecast(city: String = userPreferences.get(cityKey, defaultCity)) {
+        isLoading.postValue(true)
         forecastService.getForecast(city)
             .subscribe({ onForecast(city, it) }, { logger.log(it.toString()) })
             .addTo(disposables)
     }
 
     private fun onForecast(city: String, forecast: List<DayForecast>) {
+        isLoading.postValue(false)
         userPreferences.set(cityKey, city)
         this.forecast.postValue(forecast.map(::toViewModel))
     }

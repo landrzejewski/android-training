@@ -23,4 +23,6 @@
     <string name="tracking_duration">Duration</string>
     <string name="tracking_speed">Speed</string>
     <string name="tracking_pace">Pace</string>
+    <string name="is_subscriber">Is subscriber</string>
+    <string name="save">Save</string>
 </resources>
