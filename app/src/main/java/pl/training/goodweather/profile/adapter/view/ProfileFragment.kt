@@ -1,8 +1,12 @@
 package pl.training.goodweather.profile.adapter.view
 
+import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +32,7 @@ class ProfileFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var binding: FragmentProfileBinding
     private val disposables = CompositeDisposable()
     private val viewModel: ProfileViewModel by activityViewModels()
+    private val cameraRequestCode = 1_000
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -73,6 +78,17 @@ class ProfileFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             }
         }
         binding.promoImageBox.setOnClickListener { showAlert() }
+        binding.photoImageView.setOnClickListener {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, cameraRequestCode)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == cameraRequestCode && resultCode == RESULT_OK) {
+            val image = data?.extras?.get("data") as Bitmap
+            binding.photoImageView.setImageBitmap(image)
+        }
     }
 
     private fun showAlert() {

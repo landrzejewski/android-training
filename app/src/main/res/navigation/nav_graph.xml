@@ -35,4 +35,10 @@
         android:label="@string/settings_fragment_label">
     </fragment>
 
+    <fragment
+        android:id="@+id/TrackingFragment"
+        android:name="pl.training.goodweather.tracking.adapter.view.TrackingFragment"
+        android:label="@string/tracking_fragment_label">
+    </fragment>
+
 </navigation>
