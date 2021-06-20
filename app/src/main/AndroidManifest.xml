@@ -9,6 +9,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".GoodWeatherApplication"
@@ -40,6 +41,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".common.ScreenOffService" android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".common.YourService"
+            android:enabled="true" >
+        </service>
+
+        <receiver
+            android:name=".common.Restarter"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="restartservice" />
+            </intent-filter>
+        </receiver>
+
     </application>
+
+
 
 </manifest>

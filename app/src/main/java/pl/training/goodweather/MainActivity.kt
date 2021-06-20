@@ -1,6 +1,8 @@
 package pl.training.goodweather
 
+import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -14,9 +16,13 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import pl.training.goodweather.GoodWeatherApplication.Companion.applicationGraph
+import pl.training.goodweather.common.Restarter
+import pl.training.goodweather.common.ScreenOffService
 import pl.training.goodweather.common.UserPreferences
+import pl.training.goodweather.common.YourService
 import pl.training.goodweather.databinding.ActivityMainBinding
 import javax.inject.Inject
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var userPreferences: UserPreferences
+    private lateinit var yourService: YourService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +47,29 @@ class MainActivity : AppCompatActivity() {
 
         PreferenceManager.getDefaultSharedPreferences(this)
             .registerOnSharedPreferenceChangeListener(userPreferences)
+
+       val intent = Intent(applicationContext, ScreenOffService::class.java)
+        startService(intent)
+        Log.d("###", "Activating service")
+
+        yourService = YourService()
+        val serviceIntent = Intent(this, yourService::class.java)
+        if (!isMyServiceRunning(yourService::class.java)) {
+            startService(serviceIntent)
+        }
+
+    }
+
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                Log.i("Service status", "Running")
+                return true
+            }
+        }
+        Log.i("Service status", "Not running")
+        return false
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -60,6 +90,15 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("###", "Activity is going down")
+        val broadcastIntent = Intent()
+        broadcastIntent.action = "restartservice"
+        broadcastIntent.setClass(this, Restarter::class.java)
+        this.sendBroadcast(broadcastIntent)
     }
 
 }
