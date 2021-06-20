@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
             PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(userPreferences)
+
             firebaseExample()
         }
 
@@ -67,65 +68,49 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun firebaseExample() {
-        val user = hashMapOf(
-            "first" to "Ada",
-            "last" to "Lovelace",
-            "born" to 1815
+        val user = mapOf(
+            "firstName" to "Jan",
+            "lastName" to "Kowalski",
+            "email" to "jan.kowalski@trainig.pl"
         )
 
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d("###", "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w("###", "Error adding document", e)
-            }
+        val users = db.collection("users")
 
-        db.collection("users")
+        /*users.add(user)
+            .addOnSuccessListener {
+                Log.d("###", "Document: ${it.id}")
+            }
+            .addOnFailureListener {
+                Log.d("###", "Error: ${it}")
+            }*/
+
+        users.whereEqualTo("firstName", "Jan")
             .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d("###", "${document.id} => ${document.data}")
+            .addOnSuccessListener {
+                for (document in it) {
+                    Log.d("###", "Document: ${document.data}")
                 }
             }
-            .addOnFailureListener { exception ->
-                Log.w("###", "Error getting documents.", exception)
+            .addOnFailureListener {
+                Log.d("###", "Error: ${it}")
             }
 
-        db.collection("users").whereEqualTo("first", "Ada")
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    Log.d("###", "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("###", "Error getting documents: ", exception)
+        users.document("Fe7eQrR0rrQC0tnN020B").addSnapshotListener { snapshot, error ->
+            if (snapshot != null) {
+                Log.d("###", "Update: ${snapshot.data}")
             }
 
-        db.collection("users").document("1wBtF9ijsciZgsRCfvoa").addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w("###", "Listen failed.", e)
-                return@addSnapshotListener
-            }
-
-            val source = if (snapshot != null && snapshot.metadata.hasPendingWrites())
-                "Local"
-            else
-                "Server"
-
-            if (snapshot != null && snapshot.exists()) {
-                Log.d("###", "$source data: ${snapshot.data}")
-            } else {
-                Log.d("###", "$source data: null")
-            }
         }
 
-        db.collection("users").document("1wBtF9ijsciZgsRCfvoa")
+        users.document("Fe7eQrR0rrQC0tnN020B")
             .delete()
-            .addOnSuccessListener { Log.d("###", "DocumentSnapshot successfully deleted!") }
-            .addOnFailureListener { e -> Log.w("###", "Error deleting document", e) }
+            .addOnSuccessListener {
+                Log.d("###", "Document deleted")
+            }
+            .addOnFailureListener {
+                Log.d("###", "Error: ${it}")
+            }
+
     }
 
 }
