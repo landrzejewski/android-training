@@ -46,6 +46,7 @@ class SecurityService {
     suspend fun refreshToken(): AccessToken {
         val token = api.refreshToken("cloud-service", "refresh_token", refreshToken)
         api = proxyBuilder(token)
+        refreshToken = token.refreshToken
         return token
     }
 
