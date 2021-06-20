@@ -1,16 +1,20 @@
 package pl.training.goodweather.forecast.adapter.view
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
+import kotlinx.coroutines.launch
 import pl.training.goodweather.GoodWeatherApplication.Companion.applicationGraph
 import pl.training.goodweather.common.UserPreferences
 import pl.training.goodweather.common.formatDate
 import pl.training.goodweather.common.formatPressure
 import pl.training.goodweather.common.formatTemperature
 import pl.training.goodweather.common.logging.Logger
+import pl.training.goodweather.common.oauth.SecurityService
 import pl.training.goodweather.forecast.model.DayForecast
 import pl.training.goodweather.forecast.model.ForecastService
 import javax.inject.Inject
@@ -36,6 +40,14 @@ class ForecastViewModel : ViewModel() {
     init {
         applicationGraph.inject(this)
         refreshForecast()
+
+        val securityService = SecurityService()
+        viewModelScope.launch {
+            val token = securityService.authenticate("user","123")
+            Log.d("###", token.toString())
+            securityService.sendTestRequest()
+            securityService.refreshToken()
+        }
     }
 
     fun refreshForecast(city: String = userPreferences.get(cityKey, defaultCity)) {
