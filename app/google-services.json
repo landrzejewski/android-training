@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "287121723003",
+    "project_id": "forecast-ee71f",
+    "storage_bucket": "forecast-ee71f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287121723003:android:155c0c602f3f3ec2525cde",
+        "android_client_info": {
+          "package_name": "pl.training.goodweather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287121723003-gkclao333ucffs11opohgquckekah3qk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcVz8ktUOWLDaEB0C5v0EthYbBkdEPgPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287121723003-gkclao333ucffs11opohgquckekah3qk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
