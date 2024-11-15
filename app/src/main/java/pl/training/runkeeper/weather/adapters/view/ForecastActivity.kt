@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import pl.training.runkeeper.common.createRecyclerLayoutManager
 import pl.training.runkeeper.common.enableSafeArea
 import pl.training.runkeeper.common.hideKeyboard
 import pl.training.runkeeper.common.setDrawable
@@ -13,6 +14,7 @@ import pl.training.runkeeper.databinding.ActivityForecastBinding
 class ForecastActivity : AppCompatActivity() {
 
     private val viewModel: ForecastViewModel by viewModels()
+    private val recyclerViewAdapter = ForecastRecyclerViewAdapter()
     private lateinit var binding: ActivityForecastBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +27,10 @@ class ForecastActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-       viewModel.forecast.observe(this, ::update)
-       binding.checkButton.setOnClickListener(::onForecastCheck)
+        viewModel.forecast.observe(this, ::update)
+        binding.nextDaysForecastRecycler.layoutManager = createRecyclerLayoutManager(this)
+        binding.nextDaysForecastRecycler.adapter = recyclerViewAdapter
+        binding.checkButton.setOnClickListener(::onForecastCheck)
     }
 
     private fun update(forecast: List<DayForecastViewModel>) {
@@ -37,6 +41,7 @@ class ForecastActivity : AppCompatActivity() {
                 descriptionText.text = currentForecast.description
                 temperatureText.text = currentForecast.temperature
                 pressureText.text = currentForecast.pressure
+                recyclerViewAdapter.update(forecast.drop(1))
             }
         }
     }
