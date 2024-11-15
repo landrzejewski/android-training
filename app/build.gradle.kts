@@ -40,6 +40,8 @@ android {
 
 dependencies {
     implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.core.ktx)

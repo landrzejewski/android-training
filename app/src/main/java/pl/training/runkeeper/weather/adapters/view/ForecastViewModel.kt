@@ -13,7 +13,7 @@ import pl.training.runkeeper.weather.domain.DayForecast
 
 class ForecastViewModel : ViewModel() {
 
-    private val forecastService = WeatherConfiguration.getForecastService()
+    private val forecastService = WeatherConfiguration.forecastService
     private val forecastData = MutableLiveData<List<DayForecastViewModel>>()
 
     val forecast: LiveData<List<DayForecastViewModel>> = forecastData
