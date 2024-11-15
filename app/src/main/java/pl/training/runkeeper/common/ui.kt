@@ -35,7 +35,7 @@ fun View.hideKeyboard() {
     inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
 }
 
-fun createRecyclerLayoutManager(context: Context): LayoutManager {
+fun linearManagerWithScreenOrientation(context: Context): LayoutManager {
     val orientation = if (context.resources.configuration.orientation == SCREEN_ORIENTATION_PORTRAIT)
         HORIZONTAL else VERTICAL
     return LinearLayoutManager(context, orientation, false)

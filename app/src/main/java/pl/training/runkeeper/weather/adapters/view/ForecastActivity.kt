@@ -6,7 +6,7 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import pl.training.runkeeper.common.createRecyclerLayoutManager
+import pl.training.runkeeper.common.linearManagerWithScreenOrientation
 import pl.training.runkeeper.common.enableSafeArea
 import pl.training.runkeeper.common.hideKeyboard
 import pl.training.runkeeper.common.setDrawable
@@ -29,7 +29,7 @@ class ForecastActivity : AppCompatActivity() {
 
     private fun initView() {
         viewModel.forecast.observe(this, ::update)
-        binding.nextDaysForecastRecycler.layoutManager = createRecyclerLayoutManager(this)
+        binding.nextDaysForecastRecycler.layoutManager = linearManagerWithScreenOrientation(this)
         binding.nextDaysForecastRecycler.adapter = recyclerViewAdapter
         binding.checkButton.setOnClickListener(::onForecastCheck)
         binding.iconImage.setOnClickListener(::onShowDetails)
