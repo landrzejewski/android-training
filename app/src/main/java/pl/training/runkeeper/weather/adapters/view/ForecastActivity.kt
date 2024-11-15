@@ -1,5 +1,6 @@
 package pl.training.runkeeper.weather.adapters.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -31,6 +32,7 @@ class ForecastActivity : AppCompatActivity() {
         binding.nextDaysForecastRecycler.layoutManager = createRecyclerLayoutManager(this)
         binding.nextDaysForecastRecycler.adapter = recyclerViewAdapter
         binding.checkButton.setOnClickListener(::onForecastCheck)
+        binding.iconImage.setOnClickListener(::onShowDetails)
     }
 
     private fun update(forecast: List<DayForecastViewModel>) {
@@ -52,6 +54,12 @@ class ForecastActivity : AppCompatActivity() {
             view.hideKeyboard()
             viewModel.refreshForecast(city)
         }
+    }
+
+    private fun onShowDetails(view: View) {
+        val intent = Intent(this, ForecastDetailsActivity::class.java)
+        intent.putExtra("description", viewModel.forecast.value?.first()?.description ?: "")
+        startActivity(intent)
     }
 
 }
