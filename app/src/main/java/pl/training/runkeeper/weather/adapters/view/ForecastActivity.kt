@@ -2,6 +2,8 @@ package pl.training.runkeeper.weather.adapters.view
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.activity.enableEdgeToEdge
@@ -46,7 +48,7 @@ class ForecastActivity : AppCompatActivity() {
         is Initial -> initialView()
         is Processing -> processingView()
         is Success<*> -> forecastView(viewState.get())
-        is Failure -> errorView(viewState.message)
+        is Failure -> errorView(viewState.messageId)
     }
 
     private fun initialView() {
@@ -55,10 +57,11 @@ class ForecastActivity : AppCompatActivity() {
     }
 
     private fun processingView() {
-        binding.descriptionText.text = "Loading..."
+        binding.progressIndicator.visibility = VISIBLE
     }
 
     private fun forecastView(forecast: List<DayForecastViewModel>) {
+        binding.progressIndicator.visibility = INVISIBLE
         val currentForecast = forecast.first()
         binding.iconImage.setDrawable(currentForecast.iconName)
         binding.descriptionText.text = currentForecast.description
@@ -67,14 +70,15 @@ class ForecastActivity : AppCompatActivity() {
         recyclerViewAdapter.update(forecast.drop(1))
     }
 
-    private fun errorView(message: String) {
+    private fun errorView(messageId: Int) {
+        binding.progressIndicator.visibility = INVISIBLE
         val icon = getDrawable(this, R.drawable.ic_empty)
         binding.iconImage.setImageDrawable(icon)
         binding.descriptionText.text = ""
         binding.temperatureText.text = ""
         binding.pressureText.text = ""
         recyclerViewAdapter.update(emptyList())
-        Toast.makeText(this, message, LENGTH_LONG).show()
+        Toast.makeText(this, getString(messageId), LENGTH_LONG).show()
     }
 
     private fun onForecastCheck(view: View) {

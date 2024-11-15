@@ -12,6 +12,6 @@ sealed class ViewState {
         }
 
     }
-    class Failure(val message: String) : ViewState()
+    class Failure(val messageId: Int) : ViewState()
 
 }

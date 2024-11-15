@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import pl.training.runkeeper.R
 import pl.training.runkeeper.common.ViewState
 import pl.training.runkeeper.common.ViewState.Failure
 import pl.training.runkeeper.common.ViewState.Initial
@@ -30,10 +31,10 @@ class ForecastViewModel : ViewModel() {
             state.postValue(Processing)
             try {
                 val data = forecastService.getForecast(city).map(::toViewModel)
-                delay(1_000)
+                // delay(1_000)
                 state.postValue(Success(data))
             } catch (exception: RefreshForecastFailedException) {
-                state.postValue(Failure("forecast_refresh_failed"))
+                state.postValue(Failure(R.string.forecast_refresh_failed))
             }
         }
     }

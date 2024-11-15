@@ -3,4 +3,5 @@
     <string name="city_name_hint">Enter city name</string>
     <string name="check_button_text">Check</string>
     <string name="icon_description">Icon</string>
+    <string name="forecast_refresh_failed">Refresh failed</string>
 </resources>
