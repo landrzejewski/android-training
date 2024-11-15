@@ -2,6 +2,7 @@ package pl.training.runkeeper.weather.adapters.view
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Toast
@@ -61,7 +62,7 @@ class ForecastActivity : AppCompatActivity() {
     }
 
     private fun forecastView(forecast: List<DayForecastViewModel>) {
-        binding.progressIndicator.visibility = INVISIBLE
+        binding.progressIndicator.visibility = GONE
         val currentForecast = forecast.first()
         binding.iconImage.setDrawable(currentForecast.iconName)
         binding.descriptionText.text = currentForecast.description
@@ -71,7 +72,7 @@ class ForecastActivity : AppCompatActivity() {
     }
 
     private fun errorView(messageId: Int) {
-        binding.progressIndicator.visibility = INVISIBLE
+        binding.progressIndicator.visibility = GONE
         val icon = getDrawable(this, R.drawable.ic_empty)
         binding.iconImage.setImageDrawable(icon)
         binding.descriptionText.text = ""
