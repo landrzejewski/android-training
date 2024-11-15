@@ -5,8 +5,6 @@ import pl.training.runkeeper.weather.domain.ForecastService
 
 object WeatherConfiguration {
 
-    private val forecastService = ForecastService(FakeForecastProvider())
-
-    fun getForecastService() = forecastService
+    val forecastService by lazy { ForecastService(FakeForecastProvider()) }
 
 }

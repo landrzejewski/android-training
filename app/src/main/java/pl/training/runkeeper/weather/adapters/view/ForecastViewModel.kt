@@ -6,7 +6,7 @@ import pl.training.runkeeper.weather.WeatherConfiguration
 
 class ForecastViewModel {
 
-    private val forecastService = WeatherConfiguration.getForecastService()
+    private val forecastService = WeatherConfiguration.forecastService
     private val forecastData = MutableLiveData<List<DayForecastViewModel>>()
 
     val forecast: LiveData<List<DayForecastViewModel>> = forecastData
