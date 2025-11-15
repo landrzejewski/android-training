@@ -2,7 +2,6 @@ package pl.training.runkeeper
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -12,55 +11,89 @@ class MainActivity : AppCompatActivity() {
 
     private val tag = MainActivity::class.qualifiedName
 
+    private lateinit var buttons: Array<Button>
+    private lateinit var statusText: TextView
+    private val board = Array(9) { "" }
+    private var currentPlayer = "X"
+    private var gameOver = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         initView()
-        Log.d(tag, "### onCreate")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(tag, "### onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(tag, "### onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(tag, "### onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(tag, "### onStop")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(tag, "### onDestroy")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.d(tag, "### onRestart")
     }
 
     private fun initView() {
-        val button = findViewById<Button>(R.id.say_hello_button)
-        /*button.setOnClickListener {
-            Log.d(tag, "Tap!")
-        }*/
-        //button.setOnClickListener(::sayHello)
-        button.setOnClickListener { sayHello(it) }
+        statusText = findViewById(R.id.status_text)
+
+        buttons = arrayOf(
+            findViewById(R.id.button0),
+            findViewById(R.id.button1),
+            findViewById(R.id.button2),
+            findViewById(R.id.button3),
+            findViewById(R.id.button4),
+            findViewById(R.id.button5),
+            findViewById(R.id.button6),
+            findViewById(R.id.button7),
+            findViewById(R.id.button8)
+        )
+
+        buttons.forEachIndexed { index, button ->
+            button.setOnClickListener { onCellClick(index) }
+        }
+
+        findViewById<Button>(R.id.reset_button).setOnClickListener { resetGame() }
     }
 
-    private fun sayHello(button: View)  {
-        findViewById<TextView>(R.id.message_text).text = getString(R.string.hello_android)
+    private fun onCellClick(index: Int) {
+        if (gameOver || board[index].isNotEmpty()) {
+            return
+        }
+
+        board[index] = currentPlayer
+        buttons[index].text = currentPlayer
+
+        if (checkWinner()) {
+            statusText.text = "Player $currentPlayer Wins!"
+            gameOver = true
+            return
+        }
+
+        if (board.all { it.isNotEmpty() }) {
+            statusText.text = "It's a Draw!"
+            gameOver = true
+            return
+        }
+
+        currentPlayer = if (currentPlayer == "X") "O" else "X"
+        statusText.text = "Player $currentPlayer's Turn"
+    }
+
+    private fun checkWinner(): Boolean {
+        val winPatterns = arrayOf(
+            arrayOf(0, 1, 2), arrayOf(3, 4, 5), arrayOf(6, 7, 8), // rows
+            arrayOf(0, 3, 6), arrayOf(1, 4, 7), arrayOf(2, 5, 8), // columns
+            arrayOf(0, 4, 8), arrayOf(2, 4, 6)                     // diagonals
+        )
+
+        for (pattern in winPatterns) {
+            if (board[pattern[0]].isNotEmpty() &&
+                board[pattern[0]] == board[pattern[1]] &&
+                board[pattern[1]] == board[pattern[2]]) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private fun resetGame() {
+        board.fill("")
+        buttons.forEach { it.text = "" }
+        currentPlayer = "X"
+        gameOver = false
+        statusText.text = "Player X's Turn"
     }
 
 }
