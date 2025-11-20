@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Runkeeper">
         <activity
-            android:name=".MainActivity"
+            android:name=".weather.adapters.view.ForecastActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
