@@ -1,5 +1,7 @@
 package pl.training.runkeeper.weather.adapters.view
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,13 +17,14 @@ import pl.training.runkeeper.common.ViewState.Success
 import pl.training.runkeeper.common.formatDate
 import pl.training.runkeeper.common.formatPressure
 import pl.training.runkeeper.common.formatTemperature
-import pl.training.runkeeper.weather.WeatherConfiguration
+import pl.training.runkeeper.RunkeeperApplication
 import pl.training.runkeeper.weather.domain.DayForecast
 import pl.training.runkeeper.weather.domain.ForecastService
 import pl.training.runkeeper.weather.domain.RefreshForecastFailedException
 
-class ForecastViewModel(private val forecastService: ForecastService = WeatherConfiguration.forecastService) : ViewModel() {
+class ForecastViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val forecastService = (application as RunkeeperApplication).forecastService
     private val state = MutableLiveData<ViewState>(Initial)
 
     val viewState: LiveData<ViewState> = state
@@ -31,7 +34,7 @@ class ForecastViewModel(private val forecastService: ForecastService = WeatherCo
         viewModelScope.launch {
             try {
                 val data = forecastService.getForecast(city).map(::toViewModel)
-                delay(5_000)
+                delay(1_000)
                 state.postValue(Success(data))
             } catch (_: RefreshForecastFailedException) {
                 state.postValue(Failure(R.string.forecast_refresh_failed))
@@ -46,6 +49,19 @@ class ForecastViewModel(private val forecastService: ForecastService = WeatherCo
             description,
             iconName
         )
+    }
+
+    fun refreshForecastFromCache() {
+        viewModelScope.launch {
+            state.postValue(Processing)
+            val city = "warsaw"
+            val data = forecastService.getCachedForecast(city).map(::toViewModel)
+            if (data.isNotEmpty()) {
+                state.postValue(Success(data))
+            } else {
+                state.postValue(Initial)
+            }
+        }
     }
 
 }

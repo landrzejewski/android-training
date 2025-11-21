@@ -45,6 +45,7 @@ class ForecastActivity : AppCompatActivity() {
         binding.nextDaysForecastRecycler.layoutManager = linearManagerWithScreenOrientation(this)
         viewModel.viewState.observe(this, ::onUpdate)
         binding.checkButton.setOnClickListener(::onForecastCheck)
+        viewModel.refreshForecastFromCache()
     }
 
     private fun onUpdate(viewState: ViewState) {
