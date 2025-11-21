@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface OpenWeatherApi {
 
-    @GET("forecast/daily?units=metric&appid=b933866e6489f58987b2898c89f542b8")
+    @GET("forecast/daily?units=metric")
     suspend fun getForecast(@Query("q") city: String): ResponseDto
 
 }

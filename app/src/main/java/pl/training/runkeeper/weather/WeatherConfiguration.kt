@@ -3,6 +3,7 @@ package pl.training.runkeeper.weather
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
+import pl.training.runkeeper.common.AppIdInterceptor
 import pl.training.runkeeper.weather.adapters.provider.FakeForecastProvider
 import pl.training.runkeeper.weather.adapters.provider.openweather.OpenWeatherApi
 import pl.training.runkeeper.weather.adapters.provider.openweather.OpenWeatherForecastProviderAdapter
@@ -21,6 +22,7 @@ object WeatherConfiguration {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient().newBuilder()
+            .addInterceptor(AppIdInterceptor())
             .addInterceptor(loggingInterceptor)
             .build()
     }
