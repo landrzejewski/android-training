@@ -1,11 +1,14 @@
 package pl.training.runkeeper
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.training.runkeeper.common.AppIdInterceptor
+import pl.training.runkeeper.common.store.SharedPreferencesStore
+import pl.training.runkeeper.common.store.Store
 import pl.training.runkeeper.weather.adapters.persistence.RoomForecastRepositoryAdapter
 import pl.training.runkeeper.weather.adapters.persistence.RoomForecastRepositoryMapper
 import pl.training.runkeeper.weather.adapters.provider.FakeForecastProvider
@@ -18,6 +21,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.Executors
 
 class RunkeeperApplication : Application() {
+
+    lateinit var store: Store
+        private set
+
+    override fun onCreate() {
+        super.onCreate()
+        store = SharedPreferencesStore(applicationContext)
+    }
 
     fun database(): RunkeeperDatabase = Room
         .databaseBuilder(this, RunkeeperDatabase::class.java, "runkeeper")

@@ -4,11 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pl.training.runkeeper.R
+import pl.training.runkeeper.RunkeeperApplication
 import pl.training.runkeeper.common.ViewState
 import pl.training.runkeeper.common.ViewState.Failure
 import pl.training.runkeeper.common.ViewState.Initial
@@ -17,33 +16,44 @@ import pl.training.runkeeper.common.ViewState.Success
 import pl.training.runkeeper.common.formatDate
 import pl.training.runkeeper.common.formatPressure
 import pl.training.runkeeper.common.formatTemperature
-import pl.training.runkeeper.RunkeeperApplication
 import pl.training.runkeeper.weather.domain.DayForecast
-import pl.training.runkeeper.weather.domain.ForecastService
-import pl.training.runkeeper.weather.domain.RefreshForecastFailedException
 
 class ForecastViewModel(application: Application) : AndroidViewModel(application) {
 
     private val forecastService = (application as RunkeeperApplication).forecastService
+    private val store = (application as RunkeeperApplication).store
     private val state = MutableLiveData<ViewState>(Initial)
 
     val viewState: LiveData<ViewState> = state
 
     fun refreshForecast(city: String) {
-        state.postValue(Processing)
-        viewModelScope.launch {
-            try {
-                val data = forecastService.getForecast(city).map(::toViewModel)
-                delay(1_000)
-                state.postValue(Success(data))
-            } catch (_: RefreshForecastFailedException) {
-                state.postValue(Failure(R.string.forecast_refresh_failed))
-            }
+        execute(
+            task = { forecastService.getForecast(city) },
+            onSuccess = {
+                store.set(CITY_KEY, city)
+                updateState(city, it)
+            },
+            onFailure = { state.postValue(Failure(R.string.forecast_refresh_failed)) }
+        )
+    }
+
+    fun refreshForecastFromCache() {
+        val city = store.get(CITY_KEY, DEFAULT_CITY)
+        execute(
+            task = { forecastService.getCachedForecast(city) },
+            onSuccess = { updateState(city, it) }
+        )
+    }
+
+    private fun updateState(city: String, forecast: List<DayForecast>) {
+        if (forecast.isNotEmpty()) {
+            state.postValue(Success(ViewData(city, forecast.map(::toViewModel))))
         }
     }
 
     private fun toViewModel(dayForecast: DayForecast) = with(dayForecast) {
-        DayForecastViewModel(formatDate(date),
+        DayForecastViewModel(
+            formatDate(date),
             formatTemperature(temperature),
             formatPressure(pressure),
             description,
@@ -51,17 +61,33 @@ class ForecastViewModel(application: Application) : AndroidViewModel(application
         )
     }
 
-    fun refreshForecastFromCache() {
+    private fun <T> execute(
+        task: suspend () -> T,
+        onSuccess: (T) -> Unit,
+        onFailure: (Throwable) -> Unit = {}
+    ) {
+        state.postValue(Processing)
         viewModelScope.launch {
-            state.postValue(Processing)
-            val city = "warsaw"
-            val data = forecastService.getCachedForecast(city).map(::toViewModel)
-            if (data.isNotEmpty()) {
-                state.postValue(Success(data))
-            } else {
-                state.postValue(Initial)
+            try {
+                val result = task()
+                onSuccess(result)
+            } catch (e: Throwable) {
+                onFailure(e)
             }
         }
     }
+
+    data class ViewData(
+        val city: String,
+        val forecast: List<DayForecastViewModel>
+    )
+
+    private companion object {
+
+        const val CITY_KEY = "city"
+        const val DEFAULT_CITY = ""
+
+    }
+
 
 }
