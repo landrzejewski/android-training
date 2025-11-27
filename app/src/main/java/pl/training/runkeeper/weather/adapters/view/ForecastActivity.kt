@@ -12,6 +12,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import dagger.hilt.android.AndroidEntryPoint
 import pl.training.runkeeper.R
 import pl.training.runkeeper.common.ViewState
 import pl.training.runkeeper.common.ViewState.Failure
@@ -25,6 +26,7 @@ import pl.training.runkeeper.common.loadDrawable
 import pl.training.runkeeper.databinding.ActivityForecastBinding
 import pl.training.runkeeper.weather.adapters.view.ForecastViewModel.ViewData
 
+@AndroidEntryPoint
 class ForecastActivity : AppCompatActivity() {
 
     private val viewModel: ForecastViewModel by viewModels()

@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.training.runkeeper.R
 import pl.training.runkeeper.RunkeeperApplication
@@ -16,12 +18,17 @@ import pl.training.runkeeper.common.ViewState.Success
 import pl.training.runkeeper.common.formatDate
 import pl.training.runkeeper.common.formatPressure
 import pl.training.runkeeper.common.formatTemperature
+import pl.training.runkeeper.common.store.Store
 import pl.training.runkeeper.weather.domain.DayForecast
+import pl.training.runkeeper.weather.domain.ForecastService
+import javax.inject.Inject
 
-class ForecastViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class ForecastViewModel @Inject constructor(
+    private val forecastService: ForecastService,
+    private val store: Store
+) : ViewModel() {
 
-    private val forecastService = (application as RunkeeperApplication).forecastService
-    private val store = (application as RunkeeperApplication).store
     private val state = MutableLiveData<ViewState>(Initial)
 
     val viewState: LiveData<ViewState> = state
