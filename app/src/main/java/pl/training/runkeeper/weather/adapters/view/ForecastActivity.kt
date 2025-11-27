@@ -1,5 +1,6 @@
 package pl.training.runkeeper.weather.adapters.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -47,8 +48,15 @@ class ForecastActivity : AppCompatActivity() {
         binding.nextDaysForecastRecycler.layoutManager = linearManagerWithScreenOrientation(this)
         viewModel.viewState.observe(this, ::onUpdate)
         binding.checkButton.setOnClickListener(::onForecastCheck)
+        binding.iconImage.setOnClickListener(::onShowDetails)
         binding.cityNameEdit.setOnKeyListener(keyListener)
         viewModel.refreshForecastFromCache()
+    }
+
+    private fun onShowDetails(view: View) {
+        val intent = Intent(this, ForecastDetailsActivity::class.java)
+        intent.putExtra("description", "Sunny")
+        startActivity(intent)
     }
 
     val keyListener = OnKeyListener { view, keyCode, event ->
