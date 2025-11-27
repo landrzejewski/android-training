@@ -32,6 +32,7 @@ class ForecastViewModel @Inject constructor(
     private val state = MutableLiveData<ViewState>(Initial)
 
     val viewState: LiveData<ViewState> = state
+    var selectedDayForecast: DayForecastViewModel? = null
 
     fun refreshForecast(city: String) {
         execute(

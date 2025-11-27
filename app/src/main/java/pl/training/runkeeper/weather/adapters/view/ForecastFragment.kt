@@ -1,62 +1,61 @@
 package pl.training.runkeeper.weather.adapters.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.OnKeyListener
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import pl.training.runkeeper.R
 import pl.training.runkeeper.common.ViewState
 import pl.training.runkeeper.common.ViewState.Failure
 import pl.training.runkeeper.common.ViewState.Initial
 import pl.training.runkeeper.common.ViewState.Processing
 import pl.training.runkeeper.common.ViewState.Success
-import pl.training.runkeeper.common.enableSafeArea
 import pl.training.runkeeper.common.hideKeyboard
 import pl.training.runkeeper.common.linearManagerWithScreenOrientation
 import pl.training.runkeeper.common.loadDrawable
-import pl.training.runkeeper.databinding.ActivityForecastBinding
+import pl.training.runkeeper.databinding.FragmentForecastBinding
 import pl.training.runkeeper.weather.adapters.view.ForecastViewModel.ViewData
 
-@AndroidEntryPoint
-class ForecastActivity : AppCompatActivity() {
+class ForecastFragment : Fragment() {
 
-    private val viewModel: ForecastViewModel by viewModels()
+    private val viewModel: ForecastViewModel by activityViewModels()
     private val recyclerViewAdapter = ForecastRecyclerViewAdapter()
-    private lateinit var binding: ActivityForecastBinding
+    private lateinit var binding: FragmentForecastBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityForecastBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
-        setContentView(binding.root)
-        enableSafeArea(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        super.onCreateView(inflater, container, savedInstanceState)
+        binding = FragmentForecastBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initViews()
     }
 
     private fun initViews() {
         binding.nextDaysForecastRecycler.adapter = recyclerViewAdapter
-        binding.nextDaysForecastRecycler.layoutManager = linearManagerWithScreenOrientation(this)
+        binding.nextDaysForecastRecycler.layoutManager = linearManagerWithScreenOrientation(requireContext())
         viewModel.viewState.observe(this, ::onUpdate)
         binding.checkButton.setOnClickListener(::onForecastCheck)
-        binding.iconImage.setOnClickListener(::onShowDetails)
         binding.cityNameEdit.setOnKeyListener(keyListener)
         viewModel.refreshForecastFromCache()
+        recyclerViewAdapter.selectListener = ::onDayForecastSelect
     }
 
-    private fun onShowDetails(view: View) {
-        val intent = Intent(this, ForecastDetailsActivity::class.java)
-        intent.putExtra("description", "Sunny")
-        startActivity(intent)
+    private fun onDayForecastSelect(position: Int, selectedModel: DayForecastViewModel) {
+        viewModel.selectedDayForecast = selectedModel
+        findNavController().navigate(R.id.show_forecast_details)
     }
 
     val keyListener = OnKeyListener { view, keyCode, event ->
@@ -79,12 +78,12 @@ class ForecastActivity : AppCompatActivity() {
     }
 
     private fun initialView() {
-        val icon = AppCompatResources.getDrawable(this, R.drawable.ic_empty)
+        val icon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_empty)
         binding.iconImage.setImageDrawable(icon)
     }
 
     private fun processingView() {
-        val icon = AppCompatResources.getDrawable(this, R.drawable.ic_empty)
+        val icon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_empty)
         binding.iconImage.setImageDrawable(icon)
         binding.descriptionText.text = ""
         binding.temperatureText.text = ""
@@ -106,7 +105,7 @@ class ForecastActivity : AppCompatActivity() {
     }
 
     private fun errorView(messageId: Int) {
-        Toast.makeText(this, getString(messageId), LENGTH_LONG).show()
+        Toast.makeText(requireContext(), getString(messageId), LENGTH_LONG).show()
     }
 
     private fun onForecastCheck(view: View) {
