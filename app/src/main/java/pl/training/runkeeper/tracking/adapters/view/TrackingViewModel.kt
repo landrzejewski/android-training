@@ -9,13 +9,13 @@ import pl.training.runkeeper.common.formatSpeed
 import pl.training.runkeeper.common.formatTime
 import pl.training.runkeeper.tracking.domain.Activity
 import pl.training.runkeeper.tracking.domain.ActivityPoint
-import pl.training.runkeeper.tracking.domain.CreateActivityUseCase
+import pl.training.runkeeper.tracking.domain.TrackingService
 import pl.training.runkeeper.tracking.domain.Position
 import javax.inject.Inject
 
 @HiltViewModel
 class TrackingViewModel @Inject constructor(
-    private val createActivityUseCase: CreateActivityUseCase
+    private val trackingService: TrackingService
 ) : ViewModel() {
 
     private val activity = Activity()
