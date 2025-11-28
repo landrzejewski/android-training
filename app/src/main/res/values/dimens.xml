@@ -8,4 +8,5 @@
     <dimen name="text_size">24sp</dimen>
     <dimen name="big_size">36sp</dimen>
     <dimen name="small_text">16sp</dimen>
+    <dimen name="profile_image_size">140dp</dimen>
 </resources>

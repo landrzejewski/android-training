@@ -44,6 +44,7 @@ android {
 }
 
 dependencies {
+    implementation("com.squareup.picasso:picasso:2.8")
     implementation(libs.androidx.preference.ktx)
     val nav_version = "2.9.6"
     implementation("androidx.navigation:navigation-fragment:$nav_version")
