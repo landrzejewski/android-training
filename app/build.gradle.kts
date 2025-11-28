@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -46,6 +47,8 @@ android {
 dependencies {
     implementation("com.squareup.picasso:picasso:2.8")
     implementation(libs.androidx.preference.ktx)
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
     val nav_version = "2.9.6"
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")
