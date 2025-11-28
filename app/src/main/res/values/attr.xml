@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LabeledImage">
+        <attr name="image" format="reference" />
+        <attr name="label" format="string" />
+    </declare-styleable>
+    <declare-styleable name="CustomButton">
+        <attr name="button_image" format="reference" />
+        <attr name="button_label" format="string" />
+    </declare-styleable>
+    <declare-styleable name="Box">
+        <attr name="color" format="color" />
+        <attr name="size" format="dimension" />
+    </declare-styleable>
+</resources>

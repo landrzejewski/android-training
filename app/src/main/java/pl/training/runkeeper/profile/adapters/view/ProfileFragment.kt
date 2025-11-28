@@ -12,6 +12,7 @@ import android.provider.MediaStore.EXTRA_OUTPUT
 import android.provider.MediaStore.Images.Media.DATA
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.provider.MediaStore.MediaColumns.TITLE
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
+import pl.training.runkeeper.common.view.Point
 import pl.training.runkeeper.common.view.RoundedTransformation
 import pl.training.runkeeper.databinding.FragmentProfileBinding
 
@@ -35,7 +37,19 @@ class ProfileFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView();
+        initView()
+        /*binding.root.setOnClickListener {
+            binding.customButton.enable()
+        }*/
+        binding.chart.draw(listOf(
+            Point(0F, 0F),
+            Point(1F, 8F),
+            Point(2F, 3F),
+            Point(3F, 7F),
+            Point(4F, 9F),
+            Point(5F, 4F),
+            Point(6F, 11F)
+        ))
     }
 
     private fun initView() {
@@ -83,7 +97,7 @@ class ProfileFragment: Fragment() {
     private fun loadPhoto(uri: Uri) {
         Picasso.get()
             .load(uri)
-            .resize(100, 100)
+            .resize(400, 400)
             .transform(RoundedTransformation(100, 0))
             .into(binding.profileImage)
     }
@@ -95,7 +109,10 @@ class ProfileFragment: Fragment() {
 
     private val requestGallery = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-            result.data?.data?.let { loadPhoto(it) }
+            result.data?.data?.let {
+                Log.i("###", it.toString())
+                loadPhoto(it)
+            }
             //result.data?.data?.let { binding.profileImage.setImageURI(it) }
             //result.data?.data?.let { setBitmap(it) }
         }
@@ -120,6 +137,5 @@ class ProfileFragment: Fragment() {
         const val PROFILE_PHOTO_TITLE = "Profile photo"
 
     }
-
 
 }
