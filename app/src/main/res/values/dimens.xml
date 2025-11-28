@@ -9,4 +9,5 @@
     <dimen name="big_size">36sp</dimen>
     <dimen name="small_text">16sp</dimen>
     <dimen name="profile_image_size">140dp</dimen>
+    <dimen name="default_padding">6dp</dimen>
 </resources>

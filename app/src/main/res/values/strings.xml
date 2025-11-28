@@ -13,4 +13,8 @@
     <string name="forecast_category">Forecast</string>
     <string name="settings_fragment_title">Settings</string>
     <string name="profile_photo">Profile photo</string>
+    <string name="duration">Duration</string>
+    <string name="speed">Speed</string>
+    <string name="pace">Pace</string>
+    <string name="start">Start</string>
 </resources>
