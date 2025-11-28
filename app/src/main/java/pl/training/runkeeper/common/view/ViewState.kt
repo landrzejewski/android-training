@@ -1,4 +1,4 @@
-package pl.training.runkeeper.common
+package pl.training.runkeeper.common.view
 
 sealed class ViewState {
 

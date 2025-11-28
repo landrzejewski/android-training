@@ -9,4 +9,7 @@
     <string name="profile_tab">Profile</string>
     <string name="tracking_fragment_title">Tracking</string>
     <string name="profile_fragment_title">Profile</string>
+    <string name="settings_menu">Settings</string>
+    <string name="forecast_category">Forecast</string>
+    <string name="settings_fragment_title">Settings</string>
 </resources>

@@ -15,14 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import pl.training.runkeeper.R
-import pl.training.runkeeper.common.ViewState
-import pl.training.runkeeper.common.ViewState.Failure
-import pl.training.runkeeper.common.ViewState.Initial
-import pl.training.runkeeper.common.ViewState.Processing
-import pl.training.runkeeper.common.ViewState.Success
-import pl.training.runkeeper.common.hideKeyboard
-import pl.training.runkeeper.common.linearManagerWithScreenOrientation
-import pl.training.runkeeper.common.loadDrawable
+import pl.training.runkeeper.common.view.ViewState
+import pl.training.runkeeper.common.view.ViewState.Failure
+import pl.training.runkeeper.common.view.ViewState.Initial
+import pl.training.runkeeper.common.view.ViewState.Processing
+import pl.training.runkeeper.common.view.ViewState.Success
+import pl.training.runkeeper.common.view.hideKeyboard
+import pl.training.runkeeper.common.view.linearManagerWithScreenOrientation
+import pl.training.runkeeper.common.view.loadDrawable
 import pl.training.runkeeper.databinding.FragmentForecastBinding
 import pl.training.runkeeper.weather.adapters.view.ForecastViewModel.ViewData
 

@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pl.training.runkeeper.R
-import pl.training.runkeeper.common.loadDrawable
+import pl.training.runkeeper.common.view.loadDrawable
 import pl.training.runkeeper.databinding.ItemDayForecastBinding
 import pl.training.runkeeper.weather.adapters.view.ForecastRecyclerViewAdapter.ViewHolder
 

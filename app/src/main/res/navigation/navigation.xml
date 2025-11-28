@@ -35,4 +35,9 @@
         android:label="@string/profile_fragment_title"
         tools:layout="@layout/fragment_profile" />
 
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="pl.training.runkeeper.common.view.SettingsFragment"
+        android:label="@string/settings_fragment_title" />
+
 </navigation>

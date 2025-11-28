@@ -1,6 +1,8 @@
 package pl.training.runkeeper
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -37,5 +39,19 @@ class RunkeeperActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
+        R.id.SettingsFragment -> {
+            navController.navigate(R.id.SettingsFragment)
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
 
 }

@@ -1,7 +1,5 @@
 package pl.training.runkeeper.weather.adapters.view
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,12 +7,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.training.runkeeper.R
-import pl.training.runkeeper.RunkeeperApplication
-import pl.training.runkeeper.common.ViewState
-import pl.training.runkeeper.common.ViewState.Failure
-import pl.training.runkeeper.common.ViewState.Initial
-import pl.training.runkeeper.common.ViewState.Processing
-import pl.training.runkeeper.common.ViewState.Success
+import pl.training.runkeeper.common.view.ViewState
+import pl.training.runkeeper.common.view.ViewState.Failure
+import pl.training.runkeeper.common.view.ViewState.Initial
+import pl.training.runkeeper.common.view.ViewState.Processing
+import pl.training.runkeeper.common.view.ViewState.Success
 import pl.training.runkeeper.common.formatDate
 import pl.training.runkeeper.common.formatPressure
 import pl.training.runkeeper.common.formatTemperature
