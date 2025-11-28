@@ -21,7 +21,18 @@
         android:name="pl.training.runkeeper.weather.adapters.view.ForecastDetailsFragment"
         android:label="Weather details"
         tools:layout="@layout/fragment_forecast_details">
-
     </fragment>
+
+    <fragment
+        android:id="@+id/TrackingFragment"
+        android:name="pl.training.runkeeper.tracking.adapters.view.TrackingFragment"
+        android:label="@string/tracking_fragment_title"
+        tools:layout="@layout/fragment_tracking" />
+
+    <fragment
+        android:id="@+id/ProfileFragment"
+        android:name="pl.training.runkeeper.profile.adapters.view.ProfileFragment"
+        android:label="@string/profile_fragment_title"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>

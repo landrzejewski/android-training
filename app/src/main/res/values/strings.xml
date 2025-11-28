@@ -4,4 +4,9 @@
     <string name="check_button_text">Check</string>
     <string name="icon_description">Icon</string>
     <string name="forecast_refresh_failed">Refresh failed</string>
+    <string name="forecast_menu">Forecast</string>
+    <string name="tracking_tab">Tracking</string>
+    <string name="profile_tab">Profile</string>
+    <string name="tracking_fragment_title">Tracking</string>
+    <string name="profile_fragment_title">Profile</string>
 </resources>
