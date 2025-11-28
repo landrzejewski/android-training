@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".RunkeeperApplication"
@@ -44,6 +47,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Not working
+       <receiver android:name=".common.components.AirplaneModeReceiver" android:enabled="true" android:exported="true">
+           <intent-filter>
+               <action android:name="android.intent.action.AIRPLANE_MODE" />
+           </intent-filter>
+       </receiver>-->
+        <provider
+            android:name=".common.components.ForecastProvider"
+            android:authorities="pl.training.runkeeper.common.components.ForecastProvider"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="true"
+            android:readPermission="pl.training.runkeeper.ACCESS_FORECAST" />
+
+        <!-- In extrnal app manifest:
+
+          <permission android:name="pl.training.runkeeper.ACCESS_FORECAST"/>
+
+          <uses-permission android:name="pl.training.runkeeper.ACCESS_FORECAST"/>
+
+          <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+              tools:ignore="QueryAllPackagesPermission" />
+
+          <queries>
+              <provider android:authorities="pl.training.runkeeper.common.components.ForecastProvider"/>
+          </queries>
+      -->
+
+        <service
+            android:name=".common.components.SchedulerService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="dataSync" />
     </application>
 
 </manifest>
